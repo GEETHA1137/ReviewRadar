@@ -1,0 +1,16 @@
+{
+  "C": 10.0,
+  "file": "review_sentiment.joblib",
+  "kind": "hybrid tfidf+lexicon logistic regression",
+  "label_map": {
+    "negative": 0,
+    "positive": 1
+  },
+  "lexicon_sha256": "1ee8f794f2723b8dd035c7f0686a181cd4a88f62ef6a8c69b67a2970f8beeb17",
+  "n_train": 500,
+  "ontology_version": "2026.10-1",
+  "python": "3.12.3",
+  "seed": 42,
+  "sha256": "40e7591fcdd34b6c98b874e885ceb397e596bd5d892f757de2d631c3a1156929",
+  "sklearn": "1.8.0"
+}

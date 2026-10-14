@@ -1,0 +1,470 @@
+{
+  "dataset": {
+    "n_reviews": 500,
+    "positive": 398,
+    "negative": 102,
+    "per_category": {
+      "Books": 100,
+      "Grocery": 100,
+      "Jewelry": 100,
+      "PC & Electronics": 100,
+      "eBooks": 100
+    },
+    "labels": "binary (positive/negative) from the Sentiment_* columns; star_rating == label so it is NOT a feature"
+  },
+  "evaluation": {
+    "protocol_A_repeated_stratified_cv": {
+      "majority": {
+        "repeats": 3,
+        "folds": 5,
+        "accuracy": {
+          "mean": 0.7959999999999999,
+          "std": 1.1102230246251565e-16
+        },
+        "macro_f1": {
+          "mean": 0.443207126948775,
+          "std": 5.551115123125783e-17
+        },
+        "roc_auc": {
+          "mean": 0.49261010937038135,
+          "std": 5.551115123125783e-17
+        },
+        "negative_recall": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "negative_f1": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "last_repeat_detail": {
+          "accuracy": 0.796,
+          "macro_f1": 0.44320712694877507,
+          "negative": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "positive": {
+            "precision": 0.796,
+            "recall": 1.0,
+            "f1": 0.8864142538975501
+          },
+          "roc_auc": 0.4926101093703813,
+          "confusion_matrix_rows_true_cols_pred_[neg,pos]": [
+            [
+              0,
+              102
+            ],
+            [
+              0,
+              398
+            ]
+          ]
+        }
+      },
+      "lexicon_rule": {
+        "repeats": 3,
+        "folds": 5,
+        "accuracy": {
+          "mean": 0.918,
+          "std": 0.0
+        },
+        "macro_f1": {
+          "mean": 0.8592719209726026,
+          "std": 0.0
+        },
+        "roc_auc": {
+          "mean": 0.9392797319932998,
+          "std": 0.0
+        },
+        "negative_recall": {
+          "mean": 0.6666666666666666,
+          "std": 0.0
+        },
+        "negative_f1": {
+          "mean": 0.768361581920904,
+          "std": 0.0
+        },
+        "last_repeat_detail": {
+          "accuracy": 0.918,
+          "macro_f1": 0.8592719209726026,
+          "negative": {
+            "precision": 0.9066666666666666,
+            "recall": 0.6666666666666666,
+            "f1": 0.768361581920904
+          },
+          "positive": {
+            "precision": 0.92,
+            "recall": 0.9824120603015075,
+            "f1": 0.9501822600243013
+          },
+          "roc_auc": 0.9392797319932998,
+          "confusion_matrix_rows_true_cols_pred_[neg,pos]": [
+            [
+              68,
+              34
+            ],
+            [
+              7,
+              391
+            ]
+          ]
+        }
+      },
+      "lexicon": {
+        "repeats": 3,
+        "folds": 5,
+        "accuracy": {
+          "mean": 0.898,
+          "std": 0.0032659863237109073
+        },
+        "macro_f1": {
+          "mean": 0.8531544542827633,
+          "std": 0.004322978353599318
+        },
+        "roc_auc": {
+          "mean": 0.9541169901796565,
+          "std": 0.0036710608107261814
+        },
+        "negative_recall": {
+          "mean": 0.8464052287581699,
+          "std": 0.0046216129489316665
+        },
+        "negative_f1": {
+          "mean": 0.7720046503903006,
+          "std": 0.006479533223289802
+        },
+        "last_repeat_detail": {
+          "accuracy": 0.898,
+          "macro_f1": 0.8528316913967138,
+          "negative": {
+            "precision": 0.7107438016528925,
+            "recall": 0.8431372549019608,
+            "f1": 0.7713004484304933
+          },
+          "positive": {
+            "precision": 0.9577836411609498,
+            "recall": 0.9120603015075377,
+            "f1": 0.9343629343629344
+          },
+          "roc_auc": 0.9492684008276677,
+          "confusion_matrix_rows_true_cols_pred_[neg,pos]": [
+            [
+              86,
+              16
+            ],
+            [
+              35,
+              363
+            ]
+          ]
+        }
+      },
+      "tfidf": {
+        "repeats": 3,
+        "folds": 5,
+        "accuracy": {
+          "mean": 0.8833333333333333,
+          "std": 0.007717224601860157
+        },
+        "macro_f1": {
+          "mean": 0.8194370648959217,
+          "std": 0.014556814829599732
+        },
+        "roc_auc": {
+          "mean": 0.9389430814201729,
+          "std": 0.005061114377596481
+        },
+        "negative_recall": {
+          "mean": 0.7091503267973857,
+          "std": 0.044087377657621045
+        },
+        "negative_f1": {
+          "mean": 0.7120538333512938,
+          "std": 0.02497389900799943
+        },
+        "last_repeat_detail": {
+          "accuracy": 0.876,
+          "macro_f1": 0.8017446471054719,
+          "negative": {
+            "precision": 0.717391304347826,
+            "recall": 0.6470588235294118,
+            "f1": 0.6804123711340206
+          },
+          "positive": {
+            "precision": 0.9117647058823529,
+            "recall": 0.9346733668341709,
+            "f1": 0.9230769230769231
+          },
+          "roc_auc": 0.9394521627746577,
+          "confusion_matrix_rows_true_cols_pred_[neg,pos]": [
+            [
+              66,
+              36
+            ],
+            [
+              26,
+              372
+            ]
+          ]
+        }
+      },
+      "hybrid": {
+        "repeats": 3,
+        "folds": 5,
+        "accuracy": {
+          "mean": 0.9186666666666667,
+          "std": 0.003399346342395193
+        },
+        "macro_f1": {
+          "mean": 0.876885049456034,
+          "std": 0.004395622582726512
+        },
+        "roc_auc": {
+          "mean": 0.9693401648766709,
+          "std": 0.003576807344469731
+        },
+        "negative_recall": {
+          "mean": 0.823529411764706,
+          "std": 1.1102230246251565e-16
+        },
+        "negative_f1": {
+          "mean": 0.8051650137988485,
+          "std": 0.0065304485427989355
+        },
+        "last_repeat_detail": {
+          "accuracy": 0.914,
+          "macro_f1": 0.8708545822596243,
+          "negative": {
+            "precision": 0.7706422018348624,
+            "recall": 0.8235294117647058,
+            "f1": 0.7962085308056872
+          },
+          "positive": {
+            "precision": 0.9539641943734015,
+            "recall": 0.9371859296482412,
+            "f1": 0.9455006337135615
+          },
+          "roc_auc": 0.9643807271652379,
+          "confusion_matrix_rows_true_cols_pred_[neg,pos]": [
+            [
+              84,
+              18
+            ],
+            [
+              25,
+              373
+            ]
+          ]
+        }
+      }
+    },
+    "protocol_B_leave_one_category_out": {
+      "majority": {
+        "per_category": {
+          "Books": {
+            "n": 100,
+            "accuracy": 0.84,
+            "macro_f1": 0.45652173913043476,
+            "negative_recall": 0.0
+          },
+          "Grocery": {
+            "n": 100,
+            "accuracy": 0.83,
+            "macro_f1": 0.453551912568306,
+            "negative_recall": 0.0
+          },
+          "Jewelry": {
+            "n": 100,
+            "accuracy": 0.75,
+            "macro_f1": 0.42857142857142855,
+            "negative_recall": 0.0
+          },
+          "PC & Electronics": {
+            "n": 100,
+            "accuracy": 0.74,
+            "macro_f1": 0.42528735632183906,
+            "negative_recall": 0.0
+          },
+          "eBooks": {
+            "n": 100,
+            "accuracy": 0.82,
+            "macro_f1": 0.45054945054945056,
+            "negative_recall": 0.0
+          }
+        },
+        "mean_macro_f1": 0.4428963774282918,
+        "mean_accuracy": 0.796
+      },
+      "lexicon_rule": {
+        "per_category": {
+          "Books": {
+            "n": 100,
+            "accuracy": 0.94,
+            "macro_f1": 0.8754152823920266,
+            "negative_recall": 0.6875
+          },
+          "Grocery": {
+            "n": 100,
+            "accuracy": 0.93,
+            "macro_f1": 0.850139156497538,
+            "negative_recall": 0.5882352941176471
+          },
+          "Jewelry": {
+            "n": 100,
+            "accuracy": 0.91,
+            "macro_f1": 0.8709677419354839,
+            "negative_recall": 0.72
+          },
+          "PC & Electronics": {
+            "n": 100,
+            "accuracy": 0.94,
+            "macro_f1": 0.9177631578947368,
+            "negative_recall": 0.8076923076923077
+          },
+          "eBooks": {
+            "n": 100,
+            "accuracy": 0.87,
+            "macro_f1": 0.7378503730590844,
+            "negative_recall": 0.4444444444444444
+          }
+        },
+        "mean_macro_f1": 0.8504271423557739,
+        "mean_accuracy": 0.9179999999999999
+      },
+      "lexicon": {
+        "per_category": {
+          "Books": {
+            "n": 100,
+            "accuracy": 0.93,
+            "macro_f1": 0.8885172798216276,
+            "negative_recall": 1.0
+          },
+          "Grocery": {
+            "n": 100,
+            "accuracy": 0.95,
+            "macro_f1": 0.9134199134199135,
+            "negative_recall": 0.8823529411764706
+          },
+          "Jewelry": {
+            "n": 100,
+            "accuracy": 0.92,
+            "macro_f1": 0.8985286656519533,
+            "negative_recall": 0.92
+          },
+          "PC & Electronics": {
+            "n": 100,
+            "accuracy": 0.94,
+            "macro_f1": 0.922037422037422,
+            "negative_recall": 0.8846153846153846
+          },
+          "eBooks": {
+            "n": 100,
+            "accuracy": 0.77,
+            "macro_f1": 0.6593097318915716,
+            "negative_recall": 0.5555555555555556
+          }
+        },
+        "mean_macro_f1": 0.8563626025644975,
+        "mean_accuracy": 0.9019999999999999
+      },
+      "tfidf": {
+        "per_category": {
+          "Books": {
+            "n": 100,
+            "accuracy": 0.92,
+            "macro_f1": 0.8231653404067196,
+            "negative_recall": 0.5625
+          },
+          "Grocery": {
+            "n": 100,
+            "accuracy": 0.94,
+            "macro_f1": 0.8936924167257264,
+            "negative_recall": 0.8235294117647058
+          },
+          "Jewelry": {
+            "n": 100,
+            "accuracy": 0.87,
+            "macro_f1": 0.8331408034912078,
+            "negative_recall": 0.8
+          },
+          "PC & Electronics": {
+            "n": 100,
+            "accuracy": 0.8,
+            "macro_f1": 0.7401247401247402,
+            "negative_recall": 0.6153846153846154
+          },
+          "eBooks": {
+            "n": 100,
+            "accuracy": 0.74,
+            "macro_f1": 0.6843127731908694,
+            "negative_recall": 0.8888888888888888
+          }
+        },
+        "mean_macro_f1": 0.7948872147878526,
+        "mean_accuracy": 0.8540000000000001
+      },
+      "hybrid": {
+        "per_category": {
+          "Books": {
+            "n": 100,
+            "accuracy": 0.95,
+            "macro_f1": 0.9134199134199135,
+            "negative_recall": 0.9375
+          },
+          "Grocery": {
+            "n": 100,
+            "accuracy": 0.99,
+            "macro_f1": 0.981854472872437,
+            "negative_recall": 0.9411764705882353
+          },
+          "Jewelry": {
+            "n": 100,
+            "accuracy": 0.93,
+            "macro_f1": 0.9078826161337018,
+            "negative_recall": 0.88
+          },
+          "PC & Electronics": {
+            "n": 100,
+            "accuracy": 0.94,
+            "macro_f1": 0.922037422037422,
+            "negative_recall": 0.8846153846153846
+          },
+          "eBooks": {
+            "n": 100,
+            "accuracy": 0.77,
+            "macro_f1": 0.6593097318915716,
+            "negative_recall": 0.5555555555555556
+          }
+        },
+        "mean_macro_f1": 0.8769008312710092,
+        "mean_accuracy": 0.916
+      }
+    }
+  },
+  "final_model": {
+    "kind": "hybrid tfidf+lexicon logistic regression",
+    "C": 10.0,
+    "n_train": 500,
+    "label_map": {
+      "negative": 0,
+      "positive": 1
+    },
+    "seed": 42,
+    "ontology_version": "2026.10-1",
+    "lexicon_sha256": "1ee8f794f2723b8dd035c7f0686a181cd4a88f62ef6a8c69b67a2970f8beeb17",
+    "sklearn": "1.8.0",
+    "python": "3.12.3",
+    "sha256": "40e7591fcdd34b6c98b874e885ceb397e596bd5d892f757de2d631c3a1156929",
+    "file": "review_sentiment.joblib"
+  },
+  "limitations": [
+    "500 reviews, 5 categories, binary labels only: no neutral class and no aspect-level gold labels.",
+    "These numbers measure review-level sentiment only. Aspect extraction/aspect sentiment are rule-based and are checked only against hand-written fixtures (tests/), not independent gold annotations.",
+    "Final model is trained on all 500 reviews; reported scores are out-of-fold estimates from separate fits.",
+    "Lexicon weights were ported from the ReviewRadar.html explorer, which was probably tuned while looking at these same 500 reviews. The lexicon is not fit inside CV, so lexicon_rule / lexicon / hybrid scores are likely optimistic versus truly unseen reviews; only protocol B (unseen category) partly mitigates this. Treat them as an upper-ish estimate, not a guarantee.",
+    "C is chosen by inner CV inside each outer fold (nested), so the CV scores are not tuned on their own test folds."
+  ],
+  "elapsed_seconds": 145.3
+}
