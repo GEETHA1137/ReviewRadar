@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReviewRadar - aspect tags from reviews</title>
+<style>
+:root{--bg:#f6f7f9;--panel:#fff;--ink:#17202e;--mut:#556070;--line:#d9dee6;--acc:#b4341f;--pos:#0b7a5c;--neg:#b4341f;--neu:#8a6a00;--posbg:#dff3ec;--negbg:#fbe3df;--neubg:#f6ecc8;--r:8px}
+@media (prefers-color-scheme:dark){:root{--bg:#0e131b;--panel:#151c27;--ink:#e8edf5;--mut:#9aa6b8;--line:#263142;--acc:#ff7a5c;--pos:#4fd1ae;--neg:#ff8f7a;--neu:#f0c64a;--posbg:#10332b;--negbg:#3a1d19;--neubg:#33290d}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,"Segoe UI",Roboto,sans-serif}
+a,button,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+header{padding:16px max(16px,4vw);border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+h1{font-size:20px;margin:0}h2{font-size:16px;margin:0 0 10px}h3{font-size:14px;margin:14px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+header p{margin:0;color:var(--mut)}
+main{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px;padding:16px max(16px,4vw);max-width:1400px;margin:auto}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+label{display:block;font-weight:600;margin:0 0 4px}
+select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px}
+textarea{min-height:140px;resize:vertical}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+button.primary{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:9px 16px;font-weight:600;cursor:pointer;min-height:40px}
+button.primary:disabled{opacity:.55;cursor:not-allowed}
+.muted{color:var(--mut)}.small{font-size:13px}
+#status{min-height:1.5em}
+.err{color:var(--neg);font-weight:600}
+.text{white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:6px;padding:10px;background:var(--bg)}
+mark,button.mk{all:unset;cursor:pointer;border-radius:3px;padding:0 2px;border-bottom:2px solid currentColor}
+.s-positive{background:var(--posbg);color:var(--pos)}.s-negative{background:var(--negbg);color:var(--neg)}.s-neutral{background:var(--neubg);color:var(--neu)}
+button.mk[aria-pressed=true]{outline:2px solid var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:8px 0;list-style:none}
+.chip{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:3px 10px;font-weight:600;font-size:13px;border:1px solid currentColor}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0}dt{color:var(--mut)}dd{margin:0}
+.bar{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--line)}
+.bar i{display:block}.bar .p{background:var(--pos)}.bar .n{background:var(--neu)}.bar .g{background:var(--neg)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+nav[aria-label=Views]{display:flex;gap:6px;margin-bottom:12px}
+nav button{background:none;border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+nav button[aria-selected=true]{background:var(--ink);color:var(--bg)}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .25s}}
+</style>
+</head>
+<body>
+<header><h1>ReviewRadar</h1><p>Aspect-level tags from review text &middot; local demo, no authentication</p></header>
+<main>
+<section aria-labelledby="h-analyze">
+  <h2 id="h-analyze">Review analyzer</h2>
+  <label for="product">Collection</label><select id="product"></select>
+  <div class="row" style="display:block"><label for="text" style="margin-top:10px">Review text (1&ndash;10,000 characters)</label>
+  <textarea id="text" maxlength="10000" aria-describedby="count">Amazing display but terrible battery life. The keyboard is nice, shipping was not bad.</textarea></div>
+  <div class="row"><button class="primary" id="go">Preview tags</button><span class="muted small" id="count"></span></div>
+  <p id="status" role="status" aria-live="polite"></p>
+  <div id="result" hidden>
+    <h3>Highlighted text</h3><div class="text" id="hl"></div>
+    <h3>Overall review (trained classifier)</h3><p id="overall" class="small"></p>
+    <h3>Tags</h3><ul class="chips" id="chips"></ul>
+    <div id="detail" aria-live="polite"></div>
+    <p class="muted small">Preview only: nothing is saved and product totals do not change. Aspect scores are heuristic and <b>uncalibrated</b>; no aspect means "No supported product features detected".</p>
+  </div>
+</section>
+<section aria-labelledby="h-side">
+  <nav aria-label="Views"><button id="t-ins" aria-selected="true">Insights</button><button id="t-met" aria-selected="false">Model metrics</button></nav>
+  <div id="insights"><h2 id="h-side">Collection insights</h2><div id="ins-body" class="muted">Loading&hellip;</div></div>
+  <div id="metrics" hidden><h2>Model metrics</h2><div id="met-body" class="muted">Loading&hellip;</div></div>
+</section>
+</main>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const ICON={positive:"\u25B2",negative:"\u25BC",neutral:"\u25CF"};
+function h(tag,attrs,...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs||{})){if(k==="class")e.className=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v)}
+ for(const c of kids.flat())e.append(c instanceof Node?c:document.createTextNode(String(c)));return e}
+const clear=e=>{while(e.firstChild)e.removeChild(e.firstChild);return e};
+async function api(path,opts){const r=await fetch(path,opts);const j=await r.json();if(!r.ok)throw new Error(j.error?j.error.message:"Request failed ("+r.status+")");return j}
+const pct=x=>(100*x).toFixed(0)+"%";
+function chip(sent,label){return h("span",{class:"chip s-"+sent},ICON[sent]+" "+sent+": "+label)}
+
+// Offsets from the API are Unicode code points; JS strings are UTF-16, so slice by code point.
+function renderHighlights(text,mentions,onPick){
+ const cps=Array.from(text),box=clear($("#hl"));let pos=0,ok=true;
+ const ms=[...mentions].sort((a,b)=>a.start_char-b.start_char);
+ for(const m of ms){if(m.start_char<pos||m.end_char>cps.length||m.end_char<=m.start_char||cps.slice(m.start_char,m.end_char).join("")!==m.raw_aspect){ok=false;break}pos=m.end_char}
+ if(!ok){box.append(text,h("p",{class:"err small"},"Span data did not match the text; showing aspects as a list instead."));return}
+ pos=0;for(const m of ms){box.append(cps.slice(pos,m.start_char).join(""));
+  const b=h("button",{class:"mk s-"+m.sentiment,type:"button","aria-pressed":"false","aria-label":m.raw_aspect+", "+m.normalized_aspect+", "+m.sentiment,onclick:()=>onPick(m,b)},ICON[m.sentiment]+" "+m.raw_aspect);
+  box.append(b);pos=m.end_char}
+ box.append(cps.slice(pos).join(""));
+}
+function showDetail(m,btn){
+ document.querySelectorAll("button.mk").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));
+ const p=m.probabilities,box=clear($("#detail"));
+ box.append(h("h3",{},"Selected aspect"),h("dl",{},
+  h("dt",{},"Phrase"),h("dd",{},m.raw_aspect),h("dt",{},"Aspect"),h("dd",{},m.normalized_aspect+" ("+m.normalization.method+" match)"),
+  h("dt",{},"Sentiment"),h("dd",{},ICON[m.sentiment]+" "+m.sentiment),
+  h("dt",{},"Scores"),h("dd",{},"neg "+pct(p.negative)+" / neu "+pct(p.neutral)+" / pos "+pct(p.positive)+" (uncalibrated)"),
+  h("dt",{},"Evidence"),h("dd",{},m.evidence.length?m.evidence.join(", "):"none in clause"),
+  h("dt",{},"Context"),h("dd",{},"characters "+m.context_start_char+"\u2013"+m.context_end_char)));
+}
+async function preview(){
+ const text=$("#text").value,btn=$("#go"),st=$("#status");
+ if(!text.trim()){st.className="err";st.textContent="Enter some review text first.";return}
+ btn.disabled=true;st.className="muted";st.textContent="Analyzing\u2026";
+ try{
+  const r=await api("/api/reviews/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({review_text:text,product_id:$("#product").value})});
+  if($("#text").value!==text)return; // edited while waiting: discard stale result
+  const a=r.analysis;$("#result").hidden=false;clear($("#detail"));
+  renderHighlights(a.review_text,a.mentions,showDetail);
+  $("#overall").textContent=a.overall?a.overall.label+" (P positive "+pct(a.overall.p_positive)+")":"not available (lexicon-only mode)";
+  const c=clear($("#chips"));
+  if(!a.mentions.length)c.append(h("li",{class:"muted"},"No supported product features detected"));
+  for(const m of a.mentions)c.append(h("li",{},chip(m.sentiment,m.tag)));
+  st.textContent="Done in "+a.elapsed_ms+" ms \u00b7 backend "+a.backend;
+ }catch(e){st.className="err";st.textContent=e.message+" - your text is kept; try again."}
+ finally{btn.disabled=false}
+}
+async function loadInsights(){
+ const body=clear($("#ins-body"));
+ try{
+  const i=await api("/api/products/"+$("#product").value+"/insights"),c=i.review_counts,d=i.sentiment_distribution,tot=d.positive+d.neutral+d.negative||1;
+  body.className="";
+  body.append(h("p",{class:"small muted"},c.analyzed+" of "+c.total+" reviews analyzed \u00b7 "+c.no_aspect+" with no supported aspect"),
+   h("div",{class:"bar",role:"img","aria-label":"Aspect votes: "+d.positive+" positive, "+d.neutral+" neutral, "+d.negative+" negative"},
+    h("i",{class:"p",style:"width:"+100*d.positive/tot+"%"}),h("i",{class:"n",style:"width:"+100*d.neutral/tot+"%"}),h("i",{class:"g",style:"width:"+100*d.negative/tot+"%"})),
+   h("p",{class:"small muted"},"Bar counts review-aspect votes (not star ratings): "+d.positive+" positive / "+d.neutral+" neutral / "+d.negative+" negative."));
+  const groups=[["Strengths",i.strengths,"positive"],["Weaknesses",i.weaknesses,"negative"],["Mixed",i.mixed,"neutral"],["Neutral",i.neutral,"neutral"]];
+  const byId=Object.fromEntries(i.aspects.map(a=>[a.aspect_id,a]));
+  for(const[name,ids,s]of groups){body.append(h("h3",{},name));
+   if(!ids.length)body.append(h("p",{class:"small muted"},"None with enough support (\u2265"+i.min_support+" reviews)."));
+   else body.append(h("ul",{class:"chips"},ids.map(id=>h("li",{},chip(s,byId[id].aggregate_tag+" ("+byId[id].review_count+")")))))}
+  const ins=i.insufficient_evidence;body.append(h("h3",{},"Insufficient evidence"),h("p",{class:"small muted"},ins.length?ins.map(id=>byId[id].label).join(", "):"None"));
+ }catch(e){body.className="err";body.textContent=e.message}
+}
+async function loadMetrics(){
+ const body=clear($("#met-body"));
+ try{
+  const m=await api("/api/models/metrics"),A=m.evaluation.protocol_A_repeated_stratified_cv,B=m.evaluation.protocol_B_leave_one_category_out;
+  const rows=Object.keys(A).map(k=>h("tr",{},h("td",{},k),h("td",{},A[k].accuracy.mean.toFixed(3)),h("td",{},A[k].macro_f1.mean.toFixed(3)),h("td",{},A[k].negative_recall.mean.toFixed(3)),h("td",{},B[k].mean_macro_f1.toFixed(3))));
+  body.className="";
+  body.append(h("p",{class:"small muted"},"Review-level sentiment, "+m.dataset.n_reviews+" reviews ("+m.dataset.negative+" negative). Out-of-fold estimates."),
+   h("div",{class:"scroll"},h("table",{},h("thead",{},h("tr",{},["Model","Accuracy","Macro-F1","Neg. recall","Macro-F1, unseen category"].map(x=>h("th",{scope:"col"},x)))),h("tbody",{},rows))),
+   h("h3",{},"Limitations"),h("ul",{class:"small"},m.limitations.map(x=>h("li",{},x))),
+   h("h3",{},"Not evaluated"),h("ul",{class:"small"},m.not_evaluated.map(x=>h("li",{},"Not run: "+x))));
+ }catch(e){body.className="err";body.textContent=e.message}
+}
+function tab(which){const ins=which==="ins";$("#insights").hidden=!ins;$("#metrics").hidden=ins;
+ $("#t-ins").setAttribute("aria-selected",ins);$("#t-met").setAttribute("aria-selected",!ins);if(!ins)loadMetrics()}
+(async()=>{
+ $("#go").addEventListener("click",preview);$("#t-ins").addEventListener("click",()=>tab("ins"));$("#t-met").addEventListener("click",()=>tab("met"));
+ const upd=()=>{$("#count").textContent=Array.from($("#text").value).length+" / 10000 characters"};$("#text").addEventListener("input",()=>{upd();$("#result").hidden=true});upd();
+ $("#product").addEventListener("change",loadInsights);
+ try{const p=await api("/api/products");for(const it of p.items)$("#product").append(h("option",{value:it.product_id},it.name+" ("+it.review_count+")"));loadInsights()}
+ catch(e){clear($("#ins-body")).textContent=e.message}
+})();
+</script>
+</body>
+</html>
