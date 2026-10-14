@@ -1,0 +1,7 @@
+# runtime core (pinned to the versions this project was trained/tested with)
+scikit-learn==1.8.0
+numpy>=2.0
+joblib>=1.4
+# optional: FastAPI adapter (app.create_fastapi_app). The stdlib server needs nothing extra.
+# fastapi>=0.110
+# uvicorn>=0.29
